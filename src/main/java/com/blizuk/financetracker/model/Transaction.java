@@ -10,7 +10,7 @@ public class Transaction {
     private String description;
     private  LocalDateTime createdAt;
 
-    public void Id(Long id)
+    public void setId(Long id)
     {
         this.id = id;
     }

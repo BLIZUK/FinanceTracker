@@ -1,8 +1,10 @@
 package com.blizuk.financetracker.controller;
 
+import com.blizuk.financetracker.model.Transaction;
 import com.blizuk.financetracker.model.TransactionType;
 import com.blizuk.financetracker.service.TransactionService;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleController {
@@ -14,14 +16,16 @@ public class ConsoleController {
         while (true)
         {
             System.out.println("1. Добавление транзакции");
-            System.out.println("2. Выход");
+            System.out.println("2. Просмотр всех транзакций");
+            System.out.println("3. Выход");
 
             int choice = scanner.nextInt();
 
             switch (choice)
             {
                 case 1  -> addTransaction();
-                case 2 -> System.exit(0);
+                case 2  -> showAllTransactions();
+                case 3 -> System.exit(0);
             }
         }
     }
@@ -39,5 +43,16 @@ public class ConsoleController {
                 : TransactionType.EXPENSE;
 
         service.addTransaction(amount, type, 1L, "test");
+    }
+
+
+    private void showAllTransactions()
+    {
+        List<Transaction> listTransactions = service.getAllTransaction();
+
+        for (Transaction tx : listTransactions)
+        {
+            System.out.println(tx);
+        }
     }
 }

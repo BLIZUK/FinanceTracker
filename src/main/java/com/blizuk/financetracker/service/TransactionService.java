@@ -5,9 +5,11 @@ import com.blizuk.financetracker.model.TransactionType;
 import com.blizuk.financetracker.repository.TransactionRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class TransactionService {
     private final TransactionRepository repository = new TransactionRepository();
+
 
     public void addTransaction(double amount, TransactionType type, Long categoryId, String desc)
     {
@@ -19,5 +21,11 @@ public class TransactionService {
         tx.setCreatedAt(LocalDateTime.now());
 
         repository.save(tx);
+    }
+
+
+    public List<Transaction> getAllTransaction()
+    {
+        return repository.findAll();
     }
 }
