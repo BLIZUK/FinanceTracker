@@ -32,6 +32,7 @@ public class ConsoleController {
         }
     }
 
+
     private  void addTransaction()
     {
         System.out.print("Amount: ");
