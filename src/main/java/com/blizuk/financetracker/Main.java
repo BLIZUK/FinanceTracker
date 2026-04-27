@@ -6,7 +6,7 @@ import java.io.IOException;
 public class Main {
     static void main(String[] args) throws IOException
     {
-        System.out.println("Финансовый трекер начал работу!");
+        System.out.println("#----------------------> App start!");
         ConsoleController App = new ConsoleController();
         App.start();
     }

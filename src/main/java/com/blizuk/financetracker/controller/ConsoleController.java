@@ -16,16 +16,18 @@ public class ConsoleController {
         while (true)
         {
             System.out.println("1. Добавление транзакции");
-            System.out.println("2. Просмотр всех транзакций");
-            System.out.println("3. Выход");
+            System.out.println("2. Удаление транзакции");
+            System.out.println("3. Просмотр всех транзакций");
+            System.out.println("4. Выход");
 
             int choice = scanner.nextInt();
 
             switch (choice)
             {
                 case 1  -> addTransaction();
-                case 2  -> showAllTransactions();
-                case 3 -> System.exit(0);
+                case 2  -> deleteTransaction();
+                case 3  -> showAllTransactions();
+                case 4  -> System.exit(0);
             }
         }
     }
@@ -54,5 +56,14 @@ public class ConsoleController {
         {
             System.out.println(tx);
         }
+    }
+
+
+    private void deleteTransaction()
+    {
+        showAllTransactions();
+        System.out.println("Выберите операцию: ");
+        int choice = scanner.nextInt();
+        service.deleteTransaction(choice);
     }
 }

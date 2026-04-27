@@ -36,10 +36,9 @@ public class TransactionRepository {
 
         try (Connection conn = DatabaseManager.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()){
+             ResultSet rs = stmt.executeQuery()) {
 
-            while(rs.next())
-            {
+            while (rs.next()) {
                 Transaction tx = new Transaction();
 
                 tx.setId(rs.getLong("id"));
@@ -54,5 +53,22 @@ public class TransactionRepository {
             e.printStackTrace();
         }
         return transactions;
+    }
+
+    public void del(int id) {
+        String sql = "DELETE FROM transactions WHERE id = ?";
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            // Установка значения параметра (например, id = 1)
+            stmt.setInt(1, id);
+
+            // Выполнение запроса
+            int rowsDeleted = stmt.executeUpdate();
+            if (rowsDeleted > 0) {
+                System.out.println("Запись успешно удалена!");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
