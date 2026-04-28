@@ -16,8 +16,8 @@ public class ConsoleController {
         while (true)
         {
             System.out.println("1. Добавление транзакции");
-            System.out.println("2. Удаление транзакции");
-            System.out.println("3. Просмотр всех транзакций");
+            System.out.println("2. Удаление транзакции"); //Удалить
+            System.out.println("3. Просмотр всех транзакций");//Собрать меню
             System.out.println("4. Выход");
 
             int choice = scanner.nextInt();
@@ -25,8 +25,8 @@ public class ConsoleController {
             switch (choice)
             {
                 case 1  -> addTransaction();
-                case 2  -> deleteTransaction();
-                case 3  -> showAllTransactions();
+                case 2  -> deleteTransaction(); // Удалить
+                case 3  -> showAllTransactions(); // Собрать меню
                 case 4  -> System.exit(0);
             }
         }
@@ -34,7 +34,7 @@ public class ConsoleController {
 
     private  void addTransaction()
     {
-        System.out.print("Amount: ");
+        System.out.print("Сумма: ");
         double amount = scanner.nextDouble();
 
         System.out.print("Type (1-INCOME, 2-EXPENSE): ");
@@ -44,12 +44,17 @@ public class ConsoleController {
                 ? TransactionType.INCOME
                 : TransactionType.EXPENSE;
 
+        // обработать полный ввод
         service.addTransaction(amount, type, 1L, "test");
     }
 
 
     private void showAllTransactions()
     {
+/* 
+Расширить метод: добавить целое меню для адекватного просмотра
+операций, а также возможность длч удаленич транзакций засунуть сюда. 
+*/
         List<Transaction> listTransactions = service.getAllTransaction();
 
         for (Transaction tx : listTransactions)
@@ -58,7 +63,7 @@ public class ConsoleController {
         }
     }
 
-
+// Удалить/перенести в просмотр всех
     private void deleteTransaction()
     {
         showAllTransactions();
