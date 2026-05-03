@@ -1,6 +1,7 @@
 package com.blizuk.financetracker.repository;
 
-import com.blizuk.financetracker.db.DatabaseManager;
+// import com.blizuk.financetracker.db.DatabaseManager; // ВОССТАНОВИТЬ В РЕЛИЗ
+import com.blizuk.financetracker.db.DatabaseManagerMock; // МОК БД
 import com.blizuk.financetracker.model.Transaction;
 import com.blizuk.financetracker.model.TransactionType;
 
@@ -13,7 +14,7 @@ public class TransactionRepository {
     public void save(Transaction tx) {
         String sql = "INSERT INTO transactions (amount, type, category_id, description, created_at) VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection conn = DatabaseManager.getConnection();
+        try (Connection conn = DatabaseManagerMock.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setDouble(1, tx.getAmount());
@@ -34,7 +35,7 @@ public class TransactionRepository {
         List<Transaction> transactions = new ArrayList<>();
         String sql = "SELECT * FROM transactions ORDER BY created_at DESC";
 
-        try (Connection conn = DatabaseManager.getConnection();
+        try (Connection conn = DatabaseManagerMock.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
@@ -57,7 +58,7 @@ public class TransactionRepository {
 
     public void del(int id) {
         String sql = "DELETE FROM transactions WHERE id = ?";
-        try (Connection conn = DatabaseManager.getConnection();
+        try (Connection conn = DatabaseManagerMock.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             // Установка значения параметра (например, id = 1)
             stmt.setInt(1, id);

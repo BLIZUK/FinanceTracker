@@ -9,7 +9,7 @@ public class Transaction {
     private TransactionType type; // INCOME / EXPENSE
     private Long categoryId;
     private String description;
-    private  LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 
     public void setId(Long id)
     {
@@ -65,13 +65,13 @@ public class Transaction {
 
     @Override
     public String toString() {
-        return "Transaction{" +
+        return "Транзакция {" +
                 "id=" + id +
-                ", amount=" + amount +
-                ", type=" + type +
-                ", categoryId=" + categoryId +
-                ", description='" + description + '\'' +
-                ", createdAt=" + createdAt +
+                ", Сумма=" + amount +
+                ", Тип=" + type +
+                ", КатегорияId=" + categoryId +
+                ", Комментарий='" + description + '\'' +
+                ", Время создания=" + createdAt +
                 '}';
     }
 
