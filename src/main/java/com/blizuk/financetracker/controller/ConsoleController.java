@@ -53,9 +53,8 @@ public class ConsoleController {
 
     private void editTransactions_menu()
     {
-        boolean flag = true;
         String name = "editTransactions_menu";
-        while (flag)
+        while (true)
         {
             log.showRun(name);
             System.out.println("1. Просмотр всех транзакций");
@@ -93,7 +92,7 @@ public class ConsoleController {
     {
 /*
 Расширить метод: добавить целое меню для адекватного просмотра
-операций, а также возможность длч удаленич транзакций засунуть сюда.
+операций, а также возможность длч удаления транзакций засунуть сюда.
 */
         List<Transaction> listTransactions = service.getAllTransaction();
 
