@@ -1,6 +1,7 @@
 package com.blizuk.financetracker.model;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Transaction {
     private Long id;
@@ -65,13 +66,15 @@ public class Transaction {
 
     @Override
     public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+        String formattedDate = createdAt.format(formatter);
         return "Транзакция {" +
                 "id=" + id +
                 ", Сумма=" + amount +
                 ", Тип=" + type +
                 ", КатегорияId=" + categoryId +
                 ", Комментарий='" + description + '\'' +
-                ", Время создания=" + createdAt +
+                ", Время создания=" + formattedDate +
                 '}';
     }
 
