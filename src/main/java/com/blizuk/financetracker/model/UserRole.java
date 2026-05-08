@@ -1,6 +1,6 @@
 package com.blizuk.financetracker.model;
 
-public enum Role {
+public enum UserRole {
     USER,
     ADMIN
 }

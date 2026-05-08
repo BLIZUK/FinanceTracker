@@ -1,33 +1,71 @@
 package com.blizuk.financetracker.controller;
 
+
 import com.blizuk.financetracker.model.Transaction;
 import com.blizuk.financetracker.model.TransactionType;
+import com.blizuk.financetracker.service.LogService;
 import com.blizuk.financetracker.service.TransactionService;
+
 
 import java.util.List;
 import java.util.Scanner;
 
+
 public class ConsoleController {
     private final Scanner scanner = new Scanner(System.in);
     private final TransactionService service = new TransactionService();
+    private final LogService log;
+
+
+    public ConsoleController (LogService log)
+    {
+        this.log = log;
+    }
+
 
     public void start()
     {
+        main_menu();
+    }
+
+
+    private void main_menu()
+    {
+        String name = "main_menu";
         while (true)
         {
+            log.showRun(name);
             System.out.println("1. Добавление транзакции");
-            System.out.println("2. Удаление транзакции"); //Удалить
-            System.out.println("3. Просмотр всех транзакций");//Собрать меню
-            System.out.println("4. Выход");
+            System.out.println("2. Просмотр всех транзакций"); //Собрать меню
+            System.out.println("3. Выход");
 
             int choice = scanner.nextInt();
 
             switch (choice)
             {
-                case 1  -> addTransaction();
-                case 2  -> deleteTransaction(); // Удалить
-                case 3  -> showAllTransactions(); // Собрать меню
-                case 4  -> System.exit(0);
+                case 1 -> addTransaction();
+                case 2 -> editTransactions_menu();
+                case 3 -> { System.out.println("Выход..."); return; }
+            }
+        }
+    }
+
+
+    private void editTransactions_menu()
+    {
+        String name = "editTransactions_menu";
+        while (true)
+        {
+            log.showRun(name);
+            System.out.println("1. Просмотр всех транзакций");
+            System.out.println("2. Удаление транзакции");
+            System.out.println("3. Выход");
+
+            int choice = scanner.nextInt();
+            switch (choice) {
+                case 1 -> showAllTransactions();
+                case 2 -> deleteTransaction();
+                default -> { return; }
             }
         }
     }
@@ -52,9 +90,9 @@ public class ConsoleController {
 
     private void showAllTransactions()
     {
-/* 
+/*
 Расширить метод: добавить целое меню для адекватного просмотра
-операций, а также возможность длч удаленич транзакций засунуть сюда. 
+операций, а также возможность длч удаления транзакций засунуть сюда.
 */
         List<Transaction> listTransactions = service.getAllTransaction();
 
@@ -64,7 +102,8 @@ public class ConsoleController {
         }
     }
 
-// Удалить/перенести в просмотр всех
+
+    // Удалить/перенести в просмотр всех
     private void deleteTransaction()
     {
         showAllTransactions();

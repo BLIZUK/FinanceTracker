@@ -5,6 +5,7 @@ import com.blizuk.financetracker.model.TransactionType;
 import com.blizuk.financetracker.repository.TransactionRepository;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public class TransactionService {
@@ -14,11 +15,12 @@ public class TransactionService {
     public void addTransaction(double amount, TransactionType type, Long categoryId, String desc)
     {
         Transaction tx = new Transaction();
+        LocalDateTime now = LocalDateTime.now();
         tx.setAmount(amount);
         tx.setType(type);
         tx.setCategoryId(categoryId);
         tx.setDescription(desc);
-        tx.setCreatedAt(LocalDateTime.now());
+        tx.setCreatedAt(now.truncatedTo(ChronoUnit.MINUTES));
 
         repository.save(tx);
     }
