@@ -19,4 +19,6 @@ public class AuthenticationService {
 
         repository.save(u);
     }
+
+    public boolean authenticateUser(String name){return repository.authentication(name); }
 }
