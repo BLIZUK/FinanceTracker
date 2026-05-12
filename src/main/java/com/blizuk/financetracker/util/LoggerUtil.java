@@ -1,6 +1,6 @@
-package com.blizuk.financetracker.service;
+package com.blizuk.financetracker.util;
 
-public class LogService
+public class LoggerUtil
 {
     public void showRun(String name)
     {

@@ -1,11 +1,11 @@
 package com.blizuk.financetracker.controller;
 
 
+import com.blizuk.financetracker.util.LoggerUtil;
 import com.blizuk.financetracker.model.Transaction;
 import com.blizuk.financetracker.model.TransactionType;
-import com.blizuk.financetracker.service.AuthenticationService;
-import com.blizuk.financetracker.service.LogService;
 import com.blizuk.financetracker.service.TransactionService;
+import com.blizuk.financetracker.service.AuthenticationService;
 
 
 import java.util.List;
@@ -13,27 +13,40 @@ import java.util.Scanner;
 
 
 public class ConsoleController {
-    private final Scanner scanner = new Scanner(System.in);
-    private final TransactionService ts = new TransactionService();
-    private final AuthenticationService as = new AuthenticationService();
-    private final LogService log;
+    private final Scanner scanner;
+    private final LoggerUtil log;
+    private final TransactionService ts;
+    private final AuthenticationService as;
 
 
-    public ConsoleController(LogService log) {
+    public ConsoleController(LoggerUtil log, TransactionService ts, AuthenticationService as) {
+        this.scanner = new Scanner(System.in);
         this.log = log;
+        this.ts  = ts;
+        this.as = as;
     }
+
 
     public void start() {
-        login();
+        authentication_menu();
     }
 
-    private void login()
-    {
-        System.out.println("Введите ваш Login: ");
-        String login = scanner.nextLine();
-        if (!as.authenticateUser(login)) System.out.println("Не существует такого пользователя: " + login);
-        else{
-            System.out.println("Добро пожаловать, " + login);
+    private void authentication_menu() {
+        while(true)
+        {
+            System.out.println("Введите ваш Login: ");
+            String login = scanner.nextLine();
+            if (findUser(login))
+            {
+                System.out.println("Не существует такого пользователя: " + login);
+                System.out.println("Перейти к регистрации?:\n1. Да\n2. Нет");
+                int choice = readInt();
+                switch (choice) {
+                    case 1 -> System.out.println("в разработке");
+                }
+            } else{
+                System.out.println("Добро пожаловать, " + login);
+            }
         }
     }
 
@@ -106,6 +119,11 @@ public class ConsoleController {
         System.out.println("Выберите операцию: ");
         int choice = scanner.nextInt();
         ts.deleteTransaction(choice);
+    }
+
+    private boolean findUser(String login)
+    {
+        return !as.authenticateUser(login);
     }
 
     private int readInt() {
