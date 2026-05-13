@@ -1,38 +1,50 @@
 package com.blizuk.financetracker.model;
 
-import javax.management.relation.Role;
 
 public class User {
-    private Long id;
-    private String username;
-    private String password;
-    private UserRole role;
+    private  Long id;
+    private  String username;
+    private  String password;
+    private  UserRole role;
 
-
-    public void setUserName(String username) {
+    public User (String username, String password, UserRole role)
+    {
         this.username = username;
+        this.password = password;
+        this.role = role;
+    }
+
+    public Long getUserId() { return id;}
+
+    public void setId(Long id)
+    {
+        this.id = id;
     }
 
     public String getUserName() {
         return username;
     }
 
-    
-    public void setPassword(String password) {
-        this.password = password;
+    public void setUserName(String username) {
+        this.username = username;
     }
-    
+
     public String getPassword() {
         return password;
     }
 
-
-    public void setRole(UserRole role) {
-        this.role = role;
+    public void setPassword(String password)
+    {
+        this.password = password;
     }
 
     public UserRole getRole() {
         return role;
+    }
+
+    public void setRole(UserRole role)
+    {
+        this.role = role;
     }
 
 

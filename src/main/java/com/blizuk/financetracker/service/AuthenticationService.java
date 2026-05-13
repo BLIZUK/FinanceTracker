@@ -9,16 +9,12 @@ import com.blizuk.financetracker.repository.AuthenticationRepository;
 public class AuthenticationService {
     private final AuthenticationRepository repository = new AuthenticationRepository();
 
-
-    public void addUser(String username, String password, UserRole role)
+    public void register(String username, String password, UserRole role)
     {
-        User u = new User();
-        u.setUserName(username);
-        u.setPassword(password);
-        u.setRole(role);
-
+        User u = new User(username, password, role);
         repository.save(u);
     }
 
+    // Проверка на наличие логина в БД
     public boolean authenticateUser(String name){ return repository.authentication(name); }
 }

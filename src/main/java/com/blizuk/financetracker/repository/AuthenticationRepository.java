@@ -12,6 +12,7 @@ import java.sql.SQLException;
 
 
 public class AuthenticationRepository {
+
     public void save(User u) {
         String sql = "INSERT INTO users (username, password, role) VALUES (?, ?, ?)";
         try (Connection conn = DatabaseManagerMock.getConnection();

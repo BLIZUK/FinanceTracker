@@ -1,142 +1,108 @@
 package com.blizuk.financetracker.controller;
 
 
-import com.blizuk.financetracker.util.LoggerUtil;
-import com.blizuk.financetracker.util.InputUtil;
-import com.blizuk.financetracker.model.Transaction;
-import com.blizuk.financetracker.model.TransactionType;
-import com.blizuk.financetracker.service.TransactionService;
+import com.blizuk.financetracker.model.User;
+import com.blizuk.financetracker.model.UserRole;
 import com.blizuk.financetracker.service.AuthenticationService;
-
-
-import java.util.List;
-import java.util.Scanner;
+import com.blizuk.financetracker.service.TransactionService;
+import com.blizuk.financetracker.view.ConsoleInput;
+import com.blizuk.financetracker.view.ConsoleView;
+import com.blizuk.financetracker.view.dto.AuthInputData;
+import com.blizuk.financetracker.view.dto.TransactionInputData;
 
 
 public class ConsoleController {
-    private final Scanner scanner;
-    private final LoggerUtil log;
-    private final InputUtil iu;
+    private final ConsoleInput input;
+    private final ConsoleView view;
     private final TransactionService ts;
     private final AuthenticationService as;
+    private User currentUser = null;
 
-
-
-    public ConsoleController(LoggerUtil log,InputUtil iu, TransactionService ts, AuthenticationService as) {
-        this.scanner = new Scanner(System.in);
-        this.log = log;
-        this.iu = iu;
-        this.ts  = ts;
+    public ConsoleController(ConsoleInput ci, ConsoleView cv, TransactionService ts, AuthenticationService as) {
+        this.input = ci;
+        this.view = cv;
+        this.ts = ts;
         this.as = as;
     }
 
-
-    public void start() {
-        authentication_menu();
+    public void start()
+    {
+        if (authMenuLoop()) {return;}
+        mainMenuLoop();
     }
 
-    private void authentication_menu() {
-        while(true)
-        {
-            System.out.println(iu.green() + "Введите ваш Login: " + iu.reset());
-            String login = scanner.nextLine();
-            if (findUser(login))
+    private boolean authMenuLoop()
+    {
+        while (currentUser == null) {
+            view.showAuthMenu(); // 1. Войти, 2. Зарегистрироваться, 3. Выход
+            int choice = input.Int();
+            switch (choice) {
+                case 1 -> handleLogin();
+                case 2 -> handleRegistration();
+                case 3 -> { return true; }
+            }
+        }
+        return false;
+    }
+
+    private void mainMenuLoop() {
+        while (true) {
+            view.showMainMenu();
+            int choice = input.Int();
+            switch (choice)
             {
-                System.out.println(iu.green() + "Не существует такого пользователя: " + iu.cyan() + login + iu.reset());
-                System.out.println("Перейти к регистрации?:\n1. Да\n2. Нет");
-                int choice = readInt();
-                switch (choice) {
-                    case 1 -> System.out.println("в разработке");
-                }
-            } else{
-                System.out.println("Добро пожаловать, " + login);
-            }
-        }
-    }
-
-    private void main_menu() {
-        while (true) {
-            log.showRun("main_menu");
-            System.out.println("1. Добавление транзакции");
-            System.out.println("2. Просмотр всех транзакций"); //Собрать меню
-            System.out.println("3. Выход");
-
-            int choice = readInt();
-
-            switch (choice) {
                 case 1 -> addTransaction();
-                case 2 -> editTransactions_menu();
+                case 2 -> view.showTransactionsTable(ts.getAllTransaction());
                 case 3 -> {
-                    System.out.println("Выход...");
+                    System.out.println("Выход из программы.");
                     return;
                 }
+                default -> System.out.println("Неверный пункт меню.");
             }
-        }
-    }
 
-    private void editTransactions_menu() {
-        while (true) {
-            log.showRun("editTransactions_menu");
-            System.out.println("1. Просмотр всех транзакций");
-            System.out.println("2. Удаление транзакции");
-            System.out.println("3. Выход");
-
-            int choice = readInt();
-
-            switch (choice) {
-                case 1 -> showAllTransactions();
-                case 2 -> deleteTransaction();
-                default -> {
-                    return;
-                }
-            }
         }
     }
 
     private void addTransaction() {
-        System.out.print("Сумма: ");
-        double amount = scanner.nextDouble();
+        Long currentUserId = 1L;
+        // 1. Запрашиваем данные у пользователя через View
+        TransactionInputData inputData = view.showTransactionForm();
 
-        System.out.print("Type (1-INCOME, 2-EXPENSE): ");
-        int typeInput = scanner.nextInt();
+        // 2. Передаем данные в сервис (передаем id текущего авторизованного юзера)
+        TransactionService.addTransaction(inputData, currentUserId);
 
-        TransactionType type = (typeInput == 1)
-                ? TransactionType.INCOME
-                : TransactionType.EXPENSE;
-
-        // обработать полный ввод
-        ts.addTransaction(amount, type, 1L, "test");
+        // 3. Сообщаем об успехе
+       // view.showSuccessMessage("Транзакция успешно добавлена!" );
     }
 
-    // Нужно сделать таблицу выводом
-    private void showAllTransactions() {
-        List<Transaction> listTransactions = ts.getAllTransaction();
+    private void handleLogin() {
+        // 1. View собирает данные с консоли
+        AuthInputData credentials = view.showAuthForm("Авторизация");
 
-        for (Transaction tx : listTransactions) {
-            System.out.println(tx);
+        // 2. Service проверяет логику
+        User user = AuthenticationService.login(credentials.login(), credentials.password());
+
+        // 3. Controller принимает решение на основе ответа сервиса
+        if (user != null) {
+            this.currentUser = user;
+            view.showMessage("Добро пожаловать, " + user.getLogin() + "!");
+        } else {
+            view.showMessage("Ошибка! Неверный логин или пароль.");
         }
     }
 
-    // Удалить/перенести в просмотр всех
-    private void deleteTransaction() {
-        showAllTransactions();
-        System.out.println("Выберите операцию: ");
-        int choice = scanner.nextInt();
-        ts.deleteTransaction(choice);
-    }
+    private void handleRegistration() {
+        // 1. View собирает данные с консоли
+        AuthInputData credentials = view.showAuthForm("Регистрация нового пользователя");
 
-    private boolean findUser(String login)
-    {
-        return !as.authenticateUser(login);
-    }
+        // 2. Service проверяет логику
+        boolean success = AuthenticationService.register(credentials.login(), credentials.password(), UserRole.USER);
 
-    private int readInt() {
-        while (true) {
-            try {
-                return Integer.parseInt(scanner.nextLine());
-            } catch (Exception e) {
-                System.out.println("Введите число!");
-            }
+        // 3. View показывает результат
+        if (success) {
+            view.showMessage("Регистрация успешна! Теперь вы можете войти.");
+        } else {
+            view.showMessage("Ошибка! Такой логин уже существует.");
         }
     }
 }

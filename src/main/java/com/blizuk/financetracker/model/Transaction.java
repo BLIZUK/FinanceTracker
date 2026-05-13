@@ -12,6 +12,8 @@ public class Transaction {
     private String description;
     private LocalDateTime createdAt;
 
+    // ДОБАВИТЬ КОНСТРУКТОР
+
     public void setId(Long id)
     {
         this.id = id;
