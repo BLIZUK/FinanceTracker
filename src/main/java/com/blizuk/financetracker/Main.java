@@ -2,6 +2,7 @@ package com.blizuk.financetracker;
 
 import com.blizuk.financetracker.controller.ConsoleController;
 import com.blizuk.financetracker.service.AuthenticationService;
+import com.blizuk.financetracker.util.InputUtil;
 import com.blizuk.financetracker.util.LoggerUtil;
 import com.blizuk.financetracker.service.TransactionService;
 
@@ -11,12 +12,13 @@ public class Main {
     public static void main(String[] args) throws IOException
     {
         try {
-            LoggerUtil log = new LoggerUtil();
-            TransactionService ts = new TransactionService();
-            AuthenticationService as = new AuthenticationService();
-            log.showRun("app");
+            LoggerUtil logger_util = new LoggerUtil();
+            TransactionService transaction_service = new TransactionService();
+            AuthenticationService authentication_service = new AuthenticationService();
+            InputUtil input_util = new InputUtil();
+            logger_util.showRun("app");
 
-            ConsoleController app = new ConsoleController(log, ts, as);
+            ConsoleController app = new ConsoleController(logger_util, input_util, transaction_service, authentication_service);
             app.start();
 
         } catch (Exception e) {

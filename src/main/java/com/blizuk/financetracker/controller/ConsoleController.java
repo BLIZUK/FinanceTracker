@@ -2,6 +2,7 @@ package com.blizuk.financetracker.controller;
 
 
 import com.blizuk.financetracker.util.LoggerUtil;
+import com.blizuk.financetracker.util.InputUtil;
 import com.blizuk.financetracker.model.Transaction;
 import com.blizuk.financetracker.model.TransactionType;
 import com.blizuk.financetracker.service.TransactionService;
@@ -15,13 +16,16 @@ import java.util.Scanner;
 public class ConsoleController {
     private final Scanner scanner;
     private final LoggerUtil log;
+    private final InputUtil iu;
     private final TransactionService ts;
     private final AuthenticationService as;
 
 
-    public ConsoleController(LoggerUtil log, TransactionService ts, AuthenticationService as) {
+
+    public ConsoleController(LoggerUtil log,InputUtil iu, TransactionService ts, AuthenticationService as) {
         this.scanner = new Scanner(System.in);
         this.log = log;
+        this.iu = iu;
         this.ts  = ts;
         this.as = as;
     }
@@ -34,11 +38,11 @@ public class ConsoleController {
     private void authentication_menu() {
         while(true)
         {
-            System.out.println("Введите ваш Login: ");
+            System.out.println(iu.green() + "Введите ваш Login: " + iu.reset());
             String login = scanner.nextLine();
             if (findUser(login))
             {
-                System.out.println("Не существует такого пользователя: " + login);
+                System.out.println(iu.green() + "Не существует такого пользователя: " + iu.cyan() + login + iu.reset());
                 System.out.println("Перейти к регистрации?:\n1. Да\n2. Нет");
                 int choice = readInt();
                 switch (choice) {
