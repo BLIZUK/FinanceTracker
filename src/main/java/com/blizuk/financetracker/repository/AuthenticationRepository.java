@@ -29,7 +29,7 @@ public class AuthenticationRepository {
         }
     }
 
-    public boolean  authentication(String name)
+    public boolean findUser(String name)
     {
         String sql = "SELECT  EXISTS (SELECT 1 FROM users WHERE username = ?)";
 

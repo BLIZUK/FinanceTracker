@@ -27,8 +27,12 @@ public class ConsoleController {
 
     public void start()
     {
-        if (authMenuLoop()) {return;}
-        mainMenuLoop();
+        if (authMenuLoop())
+        {
+            return;
+        } else {
+            mainMenuLoop();
+        }
     }
 
     private boolean authMenuLoop()
@@ -85,7 +89,7 @@ public class ConsoleController {
         // 3. Controller принимает решение на основе ответа сервиса
         if (user != null) {
             this.currentUser = user;
-            view.showMessage("Добро пожаловать, " + user.getLogin() + "!");
+            view.showMessage("Добро пожаловать, " + user.getUserName() + "!");
         } else {
             view.showMessage("Ошибка! Неверный логин или пароль.");
         }
@@ -96,7 +100,7 @@ public class ConsoleController {
         AuthInputData credentials = view.showAuthForm("Регистрация нового пользователя");
 
         // 2. Service проверяет логику
-        boolean success = AuthenticationService.register(credentials.login(), credentials.password(), UserRole.USER);
+        boolean success = AuthenticationService.addUser(credentials.login(), credentials.password(), UserRole.USER);
 
         // 3. View показывает результат
         if (success) {
