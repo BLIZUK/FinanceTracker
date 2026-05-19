@@ -12,16 +12,17 @@ import java.util.List;
 public class TransactionRepository {
 
     public void save(Transaction tx) {
-        String sql = "INSERT INTO transactions (amount, type, category_id, description, created_at) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO transactions (user_id, amount, type, category_id, description, created_at) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseManagerMock.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setDouble(1, tx.getAmount());
-            stmt.setString(2, tx.getType().name());
-            stmt.setLong(3, tx.getCategoryId());
-            stmt.setString(4, tx.getDescription());
-            stmt.setTimestamp(5, Timestamp.valueOf(tx.getCreatedAt()));
+            stmt.setLong(1, tx.getUserId());
+            stmt.setDouble(2, tx.getAmount());
+            stmt.setString(3, tx.getType().name());
+            stmt.setLong(4, tx.getCategoryId());
+            stmt.setString(5, tx.getDescription());
+            stmt.setTimestamp(6, Timestamp.valueOf(tx.getCreatedAt()));
 
             stmt.executeUpdate();
 
@@ -40,13 +41,10 @@ public class TransactionRepository {
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                Transaction tx = new Transaction();
-
-                tx.setId(rs.getLong("id"));
-                tx.setAmount(rs.getDouble("amount"));
-                tx.setType(TransactionType.valueOf(rs.getString("type")));
-                tx.setDescription(rs.getString("description"));
-                tx.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+                Transaction tx = new Transaction(rs.getLong("id"),
+                        rs.getDouble("amount"), TransactionType.valueOf(rs.getString("type")),
+                        rs.getLong("categoryId"), rs.getString("description"),
+                        rs.getTimestamp("created_at").toLocalDateTime());
 
                 transactions.add(tx);
             }

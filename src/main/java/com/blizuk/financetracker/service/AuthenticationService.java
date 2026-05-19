@@ -10,13 +10,23 @@ public class AuthenticationService {
     private final AuthenticationRepository repository = new AuthenticationRepository();
 
 
-    public void addUser(String username, String password, UserRole role)
+    // Добавление нового пользователя
+    public boolean addUser(String username, String password, UserRole role)
     {
-        User u = new User();
-        u.setUserName(username);
-        u.setPassword(password);
-        u.setRole(role);
-
-        repository.save(u);
+        if (checkUser(username))
+        {
+            return false;
+        }else {
+            User u = new User(username, role);
+            u.setPassword(password);
+            repository.save(u);
+            return true;
+        }
     }
+
+    // Проверка существование пользователя
+    public boolean checkUser(String name) { return repository.existsByUsername(name); }
+
+    // Аутентификация пользователя
+    public User authenticateUser(String username, String password) { return repository.authenticateUser(username, password); }
 }

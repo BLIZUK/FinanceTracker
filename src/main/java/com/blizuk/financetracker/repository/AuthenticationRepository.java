@@ -7,24 +7,73 @@ import com.blizuk.financetracker.model.UserRole;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
 public class AuthenticationRepository {
-    public void save (User u)
-    {
-         String sql = "INSERT INTO users (username, password, role) VALUES (?, ?, ?)";
-         try (Connection conn = DatabaseManagerMock.getConnection();
-              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-             stmt.setString(1, u.getUserName());
-             stmt.setString(2, u.getPassword());
-             stmt.setString(3, u.getRole().name());
+    public void save(User u) {
+        String sql = "INSERT INTO users (username, password, role) VALUES (?, ?, ?)";
+        try (Connection conn = DatabaseManagerMock.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-             stmt.executeUpdate();
+            stmt.setString(1, u.getUserName());
+            stmt.setString(2, u.getPassword());
+            stmt.setString(3, u.getRole().name());
 
-         }catch (SQLException e){
-             e.printStackTrace();
-         }
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean existsByUsername(String username) {
+        String sql = "SELECT  EXISTS (SELECT 1 FROM users WHERE username = ?)";
+
+        try (Connection conn = DatabaseManagerMock.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, username);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getBoolean(1);
+                }
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public User authenticateUser(String username, String password) {
+        String sql = "SELECT id, username, password, role FROM users WHERE username = ?";
+
+        try (Connection conn = DatabaseManagerMock.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, username);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    if (password.equals(rs.getString("password"))) {
+                        User user = new User(
+                                rs.getString("username"),
+                                UserRole.valueOf(rs.getString("role"))
+                        );
+                        user.setId(rs.getLong("id"));
+                        return user;
+                    } else {
+                        return null; // если неверен пароль
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // если не найден
     }
 }
