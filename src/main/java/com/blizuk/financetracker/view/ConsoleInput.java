@@ -19,6 +19,8 @@ public class ConsoleInput {
         return iu.readDouble();
     }
 
+    public Long Long() {return iu.readLong();}
+
     public String String()
     {
         return iu.readString();

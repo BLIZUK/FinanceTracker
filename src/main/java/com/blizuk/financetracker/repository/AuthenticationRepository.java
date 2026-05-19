@@ -29,13 +29,13 @@ public class AuthenticationRepository {
         }
     }
 
-    public boolean findUser(String name) {
+    public boolean existsByUsername(String username) {
         String sql = "SELECT  EXISTS (SELECT 1 FROM users WHERE username = ?)";
 
         try (Connection conn = DatabaseManagerMock.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, name);
+            stmt.setString(1, username);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
@@ -59,25 +59,21 @@ public class AuthenticationRepository {
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    if (equals() password, rs.getString("password")) {
+                    if (password.equals(rs.getString("password"))) {
                         User user = new User(
                                 rs.getString("username"),
-                                rs.getString("password"),
                                 UserRole.valueOf(rs.getString("role"))
                         );
-
                         user.setId(rs.getLong("id"));
                         return user;
                     } else {
-                        return null;
+                        return null; // если неверен пароль
                     }
                 }
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return null; // если не найден
     }
 }

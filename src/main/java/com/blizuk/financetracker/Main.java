@@ -28,7 +28,7 @@ public class Main {
             ConsoleController app = new ConsoleController(console_Input, console_view, transaction_service, authentication_service);
 
             logger_util.showRun("app");
-            app.start();
+            app.run();
 
         } catch (Exception e) {
             e.printStackTrace();

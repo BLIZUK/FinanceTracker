@@ -32,4 +32,14 @@ public class InputUtil
             }
         }
     }
+
+    public Long  readLong() {
+        while (true) {
+            try {
+                return Long.parseLong(readString());
+            } catch (NumberFormatException e) {
+                System.out.print("Ошибка! Введите число (пример: 150.50): ");
+            }
+        }
+    }
 }

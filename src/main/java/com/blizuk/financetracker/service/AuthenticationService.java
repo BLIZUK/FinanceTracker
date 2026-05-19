@@ -9,20 +9,24 @@ import com.blizuk.financetracker.repository.AuthenticationRepository;
 public class AuthenticationService {
     private final AuthenticationRepository repository = new AuthenticationRepository();
 
+
+    // Добавление нового пользователя
     public boolean addUser(String username, String password, UserRole role)
     {
-        if (!authenticateUser(username))
+        if (checkUser(username))
         {
             return false;
         }else {
-            User u = new User(username, password, role);
+            User u = new User(username, role);
+            u.setPassword(password);
             repository.save(u);
             return true;
         }
     }
 
-    // Проверка на наличие логина в БД
-    public boolean findUser(String name){ return repository.findUser(name); }
+    // Проверка существование пользователя
+    public boolean checkUser(String name) { return repository.existsByUsername(name); }
 
-    public User authenticateUser(String name, String password) { return repository.}
+    // Аутентификация пользователя
+    public User authenticateUser(String username, String password) { return repository.authenticateUser(username, password); }
 }

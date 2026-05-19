@@ -7,10 +7,9 @@ public class User {
     private  String password;
     private  UserRole role;
 
-    public User (String username, String password, UserRole role)
+    public User (String username, UserRole role)
     {
         this.username = username;
-        this.password = password;
         this.role = role;
     }
 
@@ -51,7 +50,7 @@ public class User {
     @Override
     public String toString()
     {
-        return "Пользователь: { " + username + " } Пароль: { " + password + " } Роль: { " + role + " }";
+        return "Пользователь: { id - " + id +" }; Имя: { username - " + username + " }; Пароль: { password  - " + password + " }; Роль: { role - " + role + " }";
     }
 }
 

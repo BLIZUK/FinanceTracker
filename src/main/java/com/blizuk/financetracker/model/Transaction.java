@@ -1,7 +1,9 @@
 package com.blizuk.financetracker.model;
 
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
 
 public class Transaction {
     private Long id;
@@ -12,7 +14,16 @@ public class Transaction {
     private String description;
     private LocalDateTime createdAt;
 
-    // ДОБАВИТЬ КОНСТРУКТОР
+    // Конструктор
+    public Transaction(Long userId, double amount, TransactionType type, Long categoryId, String description, LocalDateTime createdAt)
+    {
+        this.userId = userId;
+        this.amount = amount;
+        this.type = type;
+        this.categoryId = categoryId;
+        this.description = description;
+        this.createdAt = createdAt;
+    }
 
     public void setId(Long id)
     {

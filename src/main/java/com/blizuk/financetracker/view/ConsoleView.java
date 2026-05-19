@@ -1,13 +1,13 @@
 package com.blizuk.financetracker.view;
 
+
 import com.blizuk.financetracker.model.Transaction;
 import com.blizuk.financetracker.model.TransactionType;
-import com.blizuk.financetracker.model.User;
 import com.blizuk.financetracker.util.ColorUtil;
 import com.blizuk.financetracker.view.dto.AuthInputData;
 import com.blizuk.financetracker.view.dto.TransactionInputData;
-
 import java.util.List;
+
 
 public class ConsoleView {
     ColorUtil color;
@@ -18,8 +18,9 @@ public class ConsoleView {
         this.color = cu;
     }
 
+    // Методы для аутентификации ------>
     public void showAuthMenu() {
-
+        clearConsole();
         System.out.println("\n=== МЕНЮ РЕГИСТРАЦИИ ===");
         System.out.println("1. Вход");
         System.out.println("2. Регистрация");
@@ -27,19 +28,34 @@ public class ConsoleView {
         System.out.print("Выберите действие: ");
     }
 
-    public void showUserNotFound(String login) {
-        System.out.println("Не существует такого пользователя: " + login);
-        System.out.println("Перейти к регистрации?:\n1. Да\n2. Нет");
+    // Форма ввода данных (только чтение)
+    public AuthInputData showAuthForm(String title) {
+        clearConsole();
+        System.out.println("\n--- " + title + " ---");
+        System.out.print("Введите логин: ");
+        String login = input.String();
+        System.out.print("Введите пароль: ");
+        String password = input.String();
+        return new AuthInputData(login, password); // dto
     }
+    // <------ Методы для аутентификации
 
+
+    // Методы для главного меню ------>
     public void showMainMenu() {
+        clearConsole();
         System.out.println("\n=== ГЛАВНОЕ МЕНЮ ===");
         System.out.println("1. Добавление транзакции");
         System.out.println("2. Просмотр всех транзакций");
-        System.out.println("3. Выход");
+        System.out.println("3. Выход из аккаунта");
+        System.out.println("4. Выход из программы");
         System.out.print("Выберите действие: ");
     }
 
+
+    /*
+    ERROR -> Колонки categoryId не найдено в этом ResultSet’’е
+     */
     public void showTransactionsTable(List<Transaction> transactions) {
         if (transactions.isEmpty()) {
             System.out.println("Список транзакций пуст.");
@@ -66,23 +82,37 @@ public class ConsoleView {
         int typeChoice = input.Int();
         TransactionType type = (typeChoice == 1) ? TransactionType.INCOME : TransactionType.EXPENSE;
 
+        System.out.print("Введите номер категории: ");
+        Long categoryId = input.Long();
+
         System.out.print("Введите описание: ");
         String description = input.String();
 
-        return new TransactionInputData(amount, type, description);
+        return new TransactionInputData(amount, type, categoryId, description); //dto
     }
+    // <------ Методы для главного меню
 
-    // Форма ввода данных (только чтение)
-    public AuthInputData showAuthForm(String title) {
-        System.out.println("\n--- " + title + " ---");
-        System.out.print("Введите логин: ");
-        String login = input.String();
-        System.out.print("Введите пароль: ");
-        String password = input.String();
-        return new AuthInputData(login, password);
-    }
 
+    // Прикладные методы
     public void showMessage(String s) {
         System.out.println(s);
     }
+
+    public void clearConsole() {
+        // ANSI-код \033[H перемещает курсор в начало, а \033[2J очищает экран
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
+    public void waitForEnter() {
+        System.out.println("\nНажмите Enter, чтобы продолжить...");
+        // Используем готовый Scanner из вашего проекта
+        try {
+            // Очистка буфера, если там что-то осталось, и ожидание ввода
+            new java.util.Scanner(System.in).nextLine();
+        } catch (Exception e) {
+            // Игнорируем ошибки ввода
+        }
+    }
+
 }
