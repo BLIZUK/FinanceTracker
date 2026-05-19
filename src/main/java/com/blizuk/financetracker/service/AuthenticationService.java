@@ -22,5 +22,7 @@ public class AuthenticationService {
     }
 
     // Проверка на наличие логина в БД
-    public boolean authenticateUser(String name){ return repository.authentication(name); }
+    public boolean findUser(String name){ return repository.findUser(name); }
+
+    public User authenticateUser(String name, String password) { return repository.}
 }

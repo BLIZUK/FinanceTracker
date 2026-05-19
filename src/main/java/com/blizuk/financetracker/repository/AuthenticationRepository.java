@@ -29,25 +29,55 @@ public class AuthenticationRepository {
         }
     }
 
-    public boolean findUser(String name)
-    {
+    public boolean findUser(String name) {
         String sql = "SELECT  EXISTS (SELECT 1 FROM users WHERE username = ?)";
 
-        try ( Connection conn = DatabaseManagerMock.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(sql)){
+        try (Connection conn = DatabaseManagerMock.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, name);
 
-            try (ResultSet rs = stmt.executeQuery()){
-                if (rs.next()){
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
                     return rs.getBoolean(1);
                 }
 
             }
-        }catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public User authenticateUser(String username, String password) {
+        String sql = "SELECT id, username, password, role FROM users WHERE username = ?";
+
+        try (Connection conn = DatabaseManagerMock.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, username);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    if (equals() password, rs.getString("password")) {
+                        User user = new User(
+                                rs.getString("username"),
+                                rs.getString("password"),
+                                UserRole.valueOf(rs.getString("role"))
+                        );
+
+                        user.setId(rs.getLong("id"));
+                        return user;
+                    } else {
+                        return null;
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null; // если не найден
     }
 }

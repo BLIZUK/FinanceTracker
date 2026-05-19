@@ -100,7 +100,7 @@ public class ConsoleController {
         AuthInputData credentials = view.showAuthForm("Регистрация нового пользователя");
 
         // 2. Service проверяет логику
-        boolean success = AuthenticationService.addUser(credentials.login(), credentials.password(), UserRole.USER);
+        boolean success = as.addUser(credentials.login(), credentials.password(), UserRole.USER);
 
         // 3. View показывает результат
         if (success) {

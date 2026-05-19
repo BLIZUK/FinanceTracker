@@ -83,5 +83,6 @@ public class ConsoleView {
     }
 
     public void showMessage(String s) {
+        System.out.println(s);
     }
 }
