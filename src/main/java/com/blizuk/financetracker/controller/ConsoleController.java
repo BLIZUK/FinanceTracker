@@ -143,14 +143,13 @@ public class ConsoleController {
     // Методы для главного меню ------>
     private void addTransaction() {
         Long currentUserId = currentUser.getUserId();
-        // 1. Запрашиваем данные у пользователя через View
         TransactionInputData inputData = view.showTransactionForm();
 
-        // 2. Передаем данные в сервис (передаем id текущего авторизованного юзера)
         TransactionService.addTransaction(inputData, currentUserId);
 
-        // 3. Сообщаем об успехе
-        // view.showSuccessMessage("Транзакция успешно добавлена!" );
+        view.clearConsole();
+        view.showMessage("Транзакция успешно добавлена!");
+        view.waitForEnter();
     }
     // <------ Методы для главного меню
 }
