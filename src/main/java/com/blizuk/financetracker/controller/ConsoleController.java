@@ -142,7 +142,7 @@ public class ConsoleController {
 
     // Методы для главного меню ------>
     private void addTransaction() {
-        Long currentUserId = 1L;
+        Long currentUserId = currentUser.getUserId();
         // 1. Запрашиваем данные у пользователя через View
         TransactionInputData inputData = view.showTransactionForm();
 
