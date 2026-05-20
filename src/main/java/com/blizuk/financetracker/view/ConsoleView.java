@@ -6,6 +6,8 @@ import com.blizuk.financetracker.model.TransactionType;
 import com.blizuk.financetracker.util.ColorUtil;
 import com.blizuk.financetracker.view.dto.AuthInputData;
 import com.blizuk.financetracker.view.dto.TransactionInputData;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -21,7 +23,7 @@ public class ConsoleView {
     // Методы для аутентификации ------>
     public void showAuthMenu() {
         clearConsole();
-        System.out.println("\n=== МЕНЮ РЕГИСТРАЦИИ ===");
+        System.out.println("\n=== МЕНЮ АУТЕНТИФИКАЦИИ ===");
         System.out.println("1. Вход");
         System.out.println("2. Регистрация");
         System.out.println("3. Выход");
@@ -52,43 +54,38 @@ public class ConsoleView {
         System.out.print("Выберите действие: ");
     }
 
+    public TransactionInputData showTransactionForm(Long uId, LocalDateTime time) {
+        System.out.println("\n--- Добавление новой транзакции ---");
+        System.out.print("Введите сумму: ");
+        double amount = input.Double();
+        System.out.println("1. Доход");
+        System.out.println("2. Расход");
+        System.out.print("Выберите тип: ");
+        int typeChoice = input.Int();
+        TransactionType type = (typeChoice == 1) ? TransactionType.INCOME : TransactionType.EXPENSE;
+        System.out.print("Введите номер категории: ");
+        Long categoryId = input.Long();
+        System.out.print("Введите описание: ");
+        String description = input.String();
+        return new TransactionInputData(uId, amount, type, categoryId, description, time); //dto
+    }
 
-    /*
-    ERROR -> Колонки categoryId не найдено в этом ResultSet’’е
-     */
+
     public void showTransactionsTable(List<Transaction> transactions) {
         if (transactions.isEmpty()) {
             System.out.println("Список транзакций пуст.");
             return;
         }
-        System.out.println("\n------------------------------------------------");
-        System.out.printf("%-5s | %-10s | %-10s | %-15s%n", "ID", "Сумма", "Тип", "Описание");
-        System.out.println("------------------------------------------------");
+        System.out.println("\n----------------------------------------------------------");
+        System.out.printf("%-5s | %-10s | %-10s | %-10s | %-15s%n", "ID", "UserId", "Сумма", "Тип", "Описание");
+        System.out.println("----------------------------------------------------------");
         for (Transaction tx : transactions) {
             // Предполагается наличие геттеров в модели Transaction
-            System.out.printf("%-5d | %-10.2f | %-10s | %-15s%n",
-                    tx.getId(), tx.getAmount(), tx.getType(), tx.getDescription());
+            System.out.printf("%-5d | %-10d | %-10.2f | %-10s | %-15s%n",
+                    tx.getId(), tx.getUserId(), tx.getAmount(), tx.getType(), tx.getDescription());
         }
-        System.out.println("------------------------------------------------");
-    }
+        System.out.println("----------------------------------------------------------");
 
-    public TransactionInputData showTransactionForm() {
-        System.out.println("\n--- Добавление новой транзакции ---");
-
-        System.out.print("Введите сумму: ");
-        double amount = input.Double();
-
-        System.out.print("Выберите тип (1 - ДОХОД, 2 - РАСХОД): ");
-        int typeChoice = input.Int();
-        TransactionType type = (typeChoice == 1) ? TransactionType.INCOME : TransactionType.EXPENSE;
-
-        System.out.print("Введите номер категории: ");
-        Long categoryId = input.Long();
-
-        System.out.print("Введите описание: ");
-        String description = input.String();
-
-        return new TransactionInputData(amount, type, categoryId, description); //dto
     }
     // <------ Методы для главного меню
 
@@ -99,9 +96,21 @@ public class ConsoleView {
     }
 
     public void clearConsole() {
-        // ANSI-код \033[H перемещает курсор в начало, а \033[2J очищает экран
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+        try {
+            String os = System.getProperty("os.name").toLowerCase();
+
+            if (os.contains("win")) {
+                // Конструкция для очистки консоли Windows
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else {
+                // Конструкция для Linux и macOS
+                new ProcessBuilder("clear").inheritIO().start().waitFor();
+            }
+        } catch (Exception e) {
+            // Если системная очистка не сработала, используем ANSI
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
+        }
     }
 
     public void waitForEnter() {
@@ -114,5 +123,4 @@ public class ConsoleView {
             // Игнорируем ошибки ввода
         }
     }
-
 }
