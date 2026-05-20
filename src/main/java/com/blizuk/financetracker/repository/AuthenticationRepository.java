@@ -1,7 +1,7 @@
 package com.blizuk.financetracker.repository;
 
 
-import com.blizuk.financetracker.db.DatabaseManagerMock;
+import com.blizuk.financetracker.db.DatabaseManager;
 import com.blizuk.financetracker.model.User;
 import com.blizuk.financetracker.model.UserRole;
 
@@ -15,7 +15,7 @@ public class AuthenticationRepository {
 
     public void save(User u) {
         String sql = "INSERT INTO users (username, password, role) VALUES (?, ?, ?)";
-        try (Connection conn = DatabaseManagerMock.getConnection();
+        try (Connection conn = DatabaseManager.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, u.getUserName());
@@ -32,7 +32,7 @@ public class AuthenticationRepository {
     public boolean existsByUsername(String username) {
         String sql = "SELECT  EXISTS (SELECT 1 FROM users WHERE username = ?)";
 
-        try (Connection conn = DatabaseManagerMock.getConnection();
+        try (Connection conn = DatabaseManager.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, username);
@@ -52,7 +52,7 @@ public class AuthenticationRepository {
     public User authenticateUser(String username, String password) {
         String sql = "SELECT id, username, password, role FROM users WHERE username = ?";
 
-        try (Connection conn = DatabaseManagerMock.getConnection();
+        try (Connection conn = DatabaseManager.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, username);
