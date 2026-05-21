@@ -43,10 +43,21 @@ public class ConsoleView {
     // <------ Методы для аутентификации
 
 
+    /*
+    protected void showTitle (String title)
+        System.out.println("\n====  Fintrack   ====\n");
+        System.out.println("\n~~~ " + title + " ~~~\n\n");
+
+        System.out.println("1. Общий Баланс: " + balance);
+        System.out.println("2. Вы потратили в  " + month + ": " + money + "Р");
+        System.out.println("3. Недавние траты:");
+         */
+
+
     // Методы для главного меню ------>
     public void showMainMenu() {
         clearConsole();
-        System.out.println("\n=== ГЛАВНОЕ МЕНЮ ===");
+        System.out.println("\n====  ГЛАВНОЕ МЕНЮ  ====");
         System.out.println("1. Добавление транзакции");
         System.out.println("2. Просмотр всех транзакций");
         System.out.println("3. Выход из аккаунта");
