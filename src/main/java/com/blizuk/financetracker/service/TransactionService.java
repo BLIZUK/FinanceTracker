@@ -18,9 +18,19 @@ public class TransactionService {
 
     public List<Transaction> getAllTransaction()
     {
-        return repository.findAll();
+        return repository.findAllTransaction();
     }
 
 
-    public void deleteTransaction(int id){repository.del(id);}
+    public List<Transaction> getUserTransaction(Long userId)
+    {
+        return repository.findUserTransaction(userId);
+    }
+
+
+    public void deleteTransaction(int id)
+    {
+        repository.del(id);
+    }
+
 }

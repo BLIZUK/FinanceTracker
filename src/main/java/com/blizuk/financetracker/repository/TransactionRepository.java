@@ -34,7 +34,7 @@ public class TransactionRepository {
     }
 
 
-    public List<Transaction> findAll() {
+    public List<Transaction> findAllTransaction() {
         List<Transaction> transactions = new ArrayList<>();
         String sql = "SELECT * FROM transactions ORDER BY created_at DESC";
 
@@ -55,6 +55,14 @@ public class TransactionRepository {
             e.printStackTrace();
         }
         return transactions;
+    }
+
+    public List<Transaction> findUserTransaction(Long userId)
+    {
+        List<Transaction> transactions = new ArrayList<>();
+        String sql = "SELECT * FROM transaction WHERE user_id = ? WHERE id = ?";
+        return transactions;
+
     }
 
     public void del(int id) {
