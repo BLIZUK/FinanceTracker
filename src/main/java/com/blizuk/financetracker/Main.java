@@ -9,12 +9,19 @@ import com.blizuk.financetracker.util.InputUtil;
 import com.blizuk.financetracker.util.LoggerUtil;
 import com.blizuk.financetracker.view.ConsoleInput;
 import com.blizuk.financetracker.view.ConsoleView;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 import java.io.IOException;
+import java.lang.classfile.Annotation;
+import java.lang.reflect.AnnotatedArrayType;
 
 
 public class Main {
     static void main(String[] args) throws IOException {
+        AnnotationConfigApplicationContext context =
+                new AnnotationConfigApplicationContext("com.blizuk.financetracker");
         try {
+
             LoggerUtil logger_util = new LoggerUtil();
             InputUtil input_util = new InputUtil();
             ColorUtil color_util = new ColorUtil();
