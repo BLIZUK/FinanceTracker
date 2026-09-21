@@ -2,13 +2,9 @@ package com.blizuk.financetracker;
 
 
 import com.blizuk.financetracker.controller.ConsoleController;
-import com.blizuk.financetracker.service.AuthenticationService;
-import com.blizuk.financetracker.service.TransactionService;
-import com.blizuk.financetracker.util.ColorUtil;
-import com.blizuk.financetracker.util.InputUtil;
-import com.blizuk.financetracker.util.LoggerUtil;
-import com.blizuk.financetracker.view.ConsoleInput;
-import com.blizuk.financetracker.view.ConsoleView;
+import com.blizuk.financetracker.service.*;
+import com.blizuk.financetracker.util.*;
+import com.blizuk.financetracker.view.*;
 import java.io.IOException;
 
 

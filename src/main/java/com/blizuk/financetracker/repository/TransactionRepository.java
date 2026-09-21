@@ -45,7 +45,7 @@ public class TransactionRepository {
             while (rs.next()) {
                 Transaction tx = new Transaction(rs.getLong("id"),
                         rs.getDouble("amount"), TransactionType.valueOf(rs.getString("type")),
-                        rs.getLong("categoryId"), rs.getString("description"),
+                        rs.getLong("category_id"), rs.getString("description"),
                         rs.getTimestamp("created_at").toLocalDateTime());
 
                 transactions.add(tx);
