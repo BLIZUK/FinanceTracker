@@ -12,6 +12,7 @@ import com.blizuk.financetracker.view.dto.TransactionInputData;
 
 
 public class ConsoleController {
+    // Обновление имен под единый стандарт
     private final ConsoleInput input;
     private final ConsoleView view;
     private final TransactionService ts;
