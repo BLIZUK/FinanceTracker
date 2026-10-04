@@ -59,6 +59,12 @@ public class ConsoleController {
                 case 1 -> handleLogin();
                 case 2 -> handleRegistration();
                 case 3 -> { return false; }
+                // Ошибочный ввод
+                default -> {
+                    view.clearConsole();
+                    view.showMessage("Неверный пункт меню.");
+                    view.waitForEnter();
+                }
             }
         }
         return true;

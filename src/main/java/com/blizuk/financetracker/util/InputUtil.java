@@ -18,7 +18,8 @@ public class InputUtil
             try {
                 return Integer.parseInt(readString());
             } catch (NumberFormatException e) {
-                System.out.print("Ошибка! Введите целое число: ");
+                System.out.print("Ошибка! Введите целое число! ");
+                //return 25958575;
             }
         }
     }
@@ -29,16 +30,17 @@ public class InputUtil
                 return Double.parseDouble(readString());
             } catch (NumberFormatException e) {
                 System.out.print("Ошибка! Введите число (пример: 150.50): ");
+                //return 25958575.25958575;
             }
         }
     }
 
-    public Long  readLong() {
+    public Long readLong() {
         while (true) {
             try {
                 return Long.parseLong(readString());
             } catch (NumberFormatException e) {
-                System.out.print("Ошибка! Введите число (пример: 150.50): ");
+                System.out.print("Ошибка! Введите число ");
             }
         }
     }
