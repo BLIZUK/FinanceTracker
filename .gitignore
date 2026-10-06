@@ -4,6 +4,8 @@ target/
 !**/src/test/**/target/
 .kotlin
 src/main/resources/database.properties
+FT_dev.bat
+output/
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
