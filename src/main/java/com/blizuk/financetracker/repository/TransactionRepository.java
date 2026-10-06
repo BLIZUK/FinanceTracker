@@ -34,7 +34,7 @@ public class TransactionRepository {
     }
 
 
-    public List<Transaction> findAll() {
+    public List<Transaction> findAllTransaction() {
         List<Transaction> transactions = new ArrayList<>();
         String sql = "SELECT * FROM transactions ORDER BY created_at DESC";
 
@@ -43,10 +43,11 @@ public class TransactionRepository {
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                Transaction tx = new Transaction(rs.getLong("id"),
+                Transaction tx = new Transaction(rs.getLong("user_Id"),
                         rs.getDouble("amount"), TransactionType.valueOf(rs.getString("type")),
                         rs.getLong("category_id"), rs.getString("description"),
                         rs.getTimestamp("created_at").toLocalDateTime());
+                tx.setId(rs.getLong("id"));
 
                 transactions.add(tx);
             }
@@ -54,6 +55,14 @@ public class TransactionRepository {
             e.printStackTrace();
         }
         return transactions;
+    }
+
+    public List<Transaction> findUserTransaction(Long userId)
+    {
+        List<Transaction> transactions = new ArrayList<>();
+        String sql = "SELECT * FROM transaction WHERE user_id = ? WHERE id = ?";
+        return transactions;
+
     }
 
     public void del(int id) {

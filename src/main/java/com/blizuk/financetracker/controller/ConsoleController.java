@@ -9,6 +9,8 @@ import com.blizuk.financetracker.view.ConsoleInput;
 import com.blizuk.financetracker.view.ConsoleView;
 import com.blizuk.financetracker.view.dto.AuthInputData;
 import com.blizuk.financetracker.view.dto.TransactionInputData;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 
 public class ConsoleController {
@@ -78,7 +80,7 @@ public class ConsoleController {
 
             switch (choice) {
                 case 1 -> addTransaction();
-                case 2 -> view.showTransactionsTable(ts.getAllTransaction());
+                case 2 -> showAllTransaction();
                 // Выход из учетки
                 case 3 -> {
                     // Смена пользователя: сбрасываем данные и выходим из этого меню
@@ -113,7 +115,6 @@ public class ConsoleController {
     // Методы для аутентификации ------>
     private void handleLogin() {
         AuthInputData credentials = view.showAuthForm("Авторизация");
-
         User user = as.authenticateUser(credentials.login(), credentials.password());
 
         view.clearConsole();
@@ -134,13 +135,15 @@ public class ConsoleController {
 
     private void handleRegistration() {
         AuthInputData credentials = view.showAuthForm("Регистрация нового пользователя");
-
         boolean success = as.addUser(credentials.login(), credentials.password(), UserRole.USER);
 
         view.clearConsole();
-        if (success) {
+        if (success)
+        {
             view.showMessage("Успешная регистрация! Теперь вы можете войти.");
-        } else {
+        }
+        else
+        {
             view.showMessage("Ошибка! Такой логин уже существует.");
         }
         view.waitForEnter();
@@ -150,12 +153,19 @@ public class ConsoleController {
     // Методы для главного меню ------>
     private void addTransaction() {
         Long currentUserId = currentUser.getUserId();
-        TransactionInputData inputData = view.showTransactionForm();
-
-        TransactionService.addTransaction(inputData, currentUserId);
+        LocalDateTime now = LocalDateTime.now();
+        TransactionInputData inputData = view.showTransactionForm(currentUserId, now.truncatedTo(ChronoUnit.MINUTES));
+        TransactionService.addTransaction(inputData);
 
         view.clearConsole();
         view.showMessage("Транзакция успешно добавлена!");
+        view.waitForEnter();
+    }
+
+    private void showAllTransaction()
+    {
+        view.clearConsole();
+        view.showTransactionsTable(ts.getAllTransaction());
         view.waitForEnter();
     }
     // <------ Методы для главного меню

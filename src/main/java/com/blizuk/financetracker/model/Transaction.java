@@ -9,7 +9,7 @@ public class Transaction {
     private Long id;
     private Long userId;
     private double amount;
-    private TransactionType type; // INCOME / EXPENSE
+    private TransactionType type;
     private Long categoryId;
     private String description;
     private LocalDateTime createdAt;
