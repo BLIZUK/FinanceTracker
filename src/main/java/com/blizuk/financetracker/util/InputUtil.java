@@ -33,7 +33,7 @@ public class InputUtil
         }
     }
 
-    public Long  readLong() {
+    public Long readLong() {
         while (true) {
             try {
                 return Long.parseLong(readString());

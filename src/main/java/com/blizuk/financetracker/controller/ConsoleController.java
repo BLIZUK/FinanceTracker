@@ -14,6 +14,7 @@ import java.time.temporal.ChronoUnit;
 
 
 public class ConsoleController {
+    // Обновление имен под единый стандарт
     private final ConsoleInput input;
     private final ConsoleView view;
     private final TransactionService ts;
@@ -60,6 +61,12 @@ public class ConsoleController {
                 case 1 -> handleLogin();
                 case 2 -> handleRegistration();
                 case 3 -> { return false; }
+                // Ошибочный ввод
+                default -> {
+                    view.clearConsole();
+                    view.showMessage("Неверный пункт меню.");
+                    view.waitForEnter();
+                }
             }
         }
         return true;
